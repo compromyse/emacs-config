@@ -2,11 +2,12 @@
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 (custom-set-variables
- '(package-selected-packages '(kaolin-themes dashboard)))
+ '(package-selected-packages '(fzf haml-mode kaolin-themes dashboard)))
 
 (setq inhibit-startup-message t)
+(setq server-kill-new-buffers t)
 
-(set-frame-font "UbuntuMono Nerd Font Mono" nil t)
+(add-to-list 'default-frame-alist '(font . "UbuntuMono Nerd Font Mono"))
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
@@ -22,13 +23,13 @@
 (delete-selection-mode 1)
 (save-place-mode 1)
 
-(global-set-key (kbd "M-q") 'kill-this-buffer)
 (global-set-key (kbd "M-n") 'other-window)
 (global-set-key (kbd "M-z") 'ibuffer)
 (global-set-key (kbd "M-j") 'dired-jump)
 (global-set-key (kbd "M-d") 'dired)
 (global-set-key (kbd "M-k") 'kill-buffer)
 (global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-t") 'eshell)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -76,3 +77,13 @@
 (setq dashboard-startup-banner nil)
 (setq dashboard-center-content t)
 (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+
+(require 'fzf)
+(setq fzf/args "-x --color bw --print-query --margin=1,0 --nohscroll"
+      fzf/executable "fzf"
+      fzf/git-grep-args "-i --line-number %s"
+      fzf-grep-command "grep -nrH"
+      fzf/position-bottom t
+      fzf/window-height 15)
+
+(global-set-key (kbd "C-SPC") 'fzf-directory)
