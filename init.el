@@ -1,3 +1,9 @@
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(package-initialize)
+(custom-set-variables
+ '(package-selected-packages '(kaolin-themes dashboard)))
+
 (setq inhibit-startup-message t)
 
 (set-frame-font "UbuntuMono Nerd Font Mono" nil t)
@@ -36,7 +42,7 @@
 (kill-buffer "*Messages*")
 
 (add-hook 'minibuffer-exit-hook
-      '(lambda ()
+      #'(lambda ()
          (let ((buffer "*Completions*"))
            (and (get-buffer buffer)
                 (kill-buffer buffer)))))
@@ -70,9 +76,3 @@
 (setq dashboard-startup-banner nil)
 (setq dashboard-center-content t)
 (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(package-initialize)
-(custom-set-variables
- '(package-selected-packages '(kaolin-themes dashboard seti-theme)))
