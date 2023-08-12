@@ -7,12 +7,14 @@
 (setq inhibit-startup-message t)
 (setq server-kill-new-buffers t)
 
-(add-to-list 'default-frame-alist '(font . "UbuntuMono Nerd Font Mono"))
+(set-fontset-font t nil "UbuntuMono Nerd Font Mono" nil 'append)
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
 (setq-default cursor-type 'bar)
+
+(setq scroll-step 1)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -30,6 +32,7 @@
 (global-set-key (kbd "M-k") 'kill-buffer)
 (global-set-key (kbd "M-s") 'save-buffer)
 (global-set-key (kbd "M-t") 'eshell)
+(global-set-key (kbd "M-c") 'comment-line)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -38,6 +41,11 @@
   (if (get-buffer "*scratch*")
       (kill-buffer "*scratch*")))
 (add-hook 'after-change-major-mode-hook 'remove-scratch-buffer)
+
+(defun remove-native-compile-buffer ()
+  (if (get-buffer "*Async-native-compile-log*")
+      (kill-buffer "*Async-native-compile-log*")))
+(add-hook 'after-change-major-mode-hook 'remove-native-compile-buffer)
 
 (setq-default message-log-max nil)
 (kill-buffer "*Messages*")
@@ -79,11 +87,11 @@
 (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
 
 (require 'fzf)
-(setq fzf/args "-x --color bw --print-query --margin=1,0 --nohscroll"
-      fzf/executable "fzf"
-      fzf/git-grep-args "-i --line-number %s"
-      fzf-grep-command "grep -nrH"
-      fzf/position-bottom t
-      fzf/window-height 15)
+(setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll --no-unicode"
+    fzf/executable "fzf"
+    fzf/git-grep-args "-i --line-number %s"
+    fzf/grep-command "rg --no-heading -nH"
+    fzf/position-bottom t
+    fzf/window-height 15)
 
 (global-set-key (kbd "C-SPC") 'fzf-directory)
